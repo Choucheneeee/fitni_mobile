@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.Backend ;
+const API_BASE_URL = process.env.API_BASE_URL;
 
 // API Response types
 export interface ApiResponse<T = any> {

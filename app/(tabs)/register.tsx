@@ -546,7 +546,7 @@ export default function RegisterScreen() {
               <TouchableOpacity style={styles.backButton} onPress={handlePrevious}>
                 <ArrowLeft size={24} color="#F5F7FA" />
               </TouchableOpacity>
-              <Text style={styles.headerTitle}>Create Account</Text>
+              <Text style={styles.headerTitle}>sss Account</Text>
               <View style={styles.placeholder} />
             </View>
 
