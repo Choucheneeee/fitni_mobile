@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.Backend ;
+const API_BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL ;
 
 // API Response types
 export interface ApiResponse<T = any> {
@@ -6,6 +6,7 @@ export interface ApiResponse<T = any> {
   data?: T;
   message?: string;
   error?: string;
+  status?: number; // Added status code for better error handling
 }
 
 export interface User {
@@ -65,7 +66,7 @@ class ApiService {
   ): Promise<ApiResponse<T>> {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
-      console.log("route",url)
+      console.log("API Request:", url, options.method || 'GET');
       
       const defaultHeaders = {
         'Content-Type': 'application/json',
@@ -80,18 +81,26 @@ class ApiService {
         },
       });
 
-      const data = await response.json();
+      // Handle non-JSON responses
+      const contentType = response.headers.get('content-type');
+      const data = contentType?.includes('application/json') 
+        ? await response.json() 
+        : await response.text();
 
       if (!response.ok) {
         return {
           success: false,
-          error: data.message || data.error || `HTTP ${response.status}`,
+          error: typeof data === 'object' 
+            ? data.message || data.error || `Request failed with status ${response.status}`
+            : data || `Request failed with status ${response.status}`,
+          status: response.status,
         };
       }
 
       return {
         success: true,
-        data,
+        data: data as T,
+        status: response.status,
       };
     } catch (error) {
       console.error('API Request failed:', error);
@@ -119,29 +128,21 @@ class ApiService {
 
   // User endpoints
   async getAllUsers(): Promise<ApiResponse<User[]>> {
-    return this.makeRequest<User[]>('/api/allUsers', {
-      method: 'GET',
-    });
+    return this.makeRequest<User[]>('/api/allUsers');
   }
 
   // Health check
   async healthCheck(): Promise<ApiResponse<any>> {
-    return this.makeRequest<any>('/health/db', {
-      method: 'GET',
-    });
+    return this.makeRequest<any>('/health/db');
   }
 
-  // Exercise endpoints (for future use)
+  // Exercise endpoints
   async getAllExercises(): Promise<ApiResponse<any[]>> {
-    return this.makeRequest<any[]>('/api/exercice/all', {
-      method: 'GET',
-    });
+    return this.makeRequest<any[]>('/api/exercice/all');
   }
 
   async getExerciseById(id: string): Promise<ApiResponse<any>> {
-    return this.makeRequest<any>(`/api/exercice/get/${id}`, {
-      method: 'GET',
-    });
+    return this.makeRequest<any>(`/api/exercice/get/${id}`);
   }
 
   async createExercise(exerciseData: any): Promise<ApiResponse<any>> {
