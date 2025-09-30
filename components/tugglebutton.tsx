@@ -11,7 +11,7 @@ export default function ToggleButton() {
       onPress={toggleTheme}
     >
       <Text style={{ color: "#fff", fontSize: 16 }}>
-        Switch to {isDark ? "Light" : "Dark"} Mode
+        {isDark ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </Text>
     </TouchableOpacity>
   );
@@ -19,9 +19,8 @@ export default function ToggleButton() {
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 20,
-    padding: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 8,
-    alignItems: "center",
   },
 });
