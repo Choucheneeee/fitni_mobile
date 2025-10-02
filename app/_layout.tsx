@@ -21,7 +21,7 @@ export default function Layout() {
       </View>
 
       {/* Stack handles all routes */}
-      <Stack screenOptions={{ headerShown: false }} initialRouteName="Home" />
+      <Stack screenOptions={{ headerShown: false }} initialRouteName="index" />
     </ThemeProvider>
   );
 }

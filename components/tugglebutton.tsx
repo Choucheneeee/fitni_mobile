@@ -7,11 +7,11 @@ export default function ToggleButton() {
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: theme.primary }]}
+      style={[styles.button]}
       onPress={toggleTheme}
     >
       <Text style={{ color: "#fff", fontSize: 16 }}>
-        {isDark ? "☀️ Light Mode" : "🌙 Dark Mode"}
+        {isDark ? "☀️" : "🌙"}
       </Text>
     </TouchableOpacity>
   );
@@ -22,5 +22,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
+    backgroundColor:"#9E89FF",
   },
 });
