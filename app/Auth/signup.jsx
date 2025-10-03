@@ -1,28 +1,36 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useTheme } from "../../components/ThemeContext";
 
-export default function Login() {
+export default function Signup() {
   const { theme, isDark } = useTheme();
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [focusedInput, setFocusedInput] = useState(""); // Track which input is focused
+  const [cpassword, setcPassword] = useState("");
+  const [focusedInput, setFocusedInput] = useState("");
 
   const handleLogin = () => {
     console.log("Login with:", email, password);
-    router.push("/Setup");
+    router.push("/Onboarding/indexStep2");
   };
 
   const getInputBackground = (inputName) => {
     if (focusedInput === inputName) {
-      // When focused: lighter in dark, darker in light
-      return isDark ? "#555" : "#ddd";
-    } else {
-      // Normal state
-      return theme.text;
+      return isDark ? "#333" : "#E8F0FE"; // soft focus colors
     }
+    return theme.secondary; // neutral when unfocused
   };
 
   return (
@@ -33,43 +41,72 @@ export default function Login() {
       {/* Logo & Welcome */}
       <View style={styles.logoContainer}>
         <Image
-          source={isDark ? require("../../assets/images/logo.png") : require("../../assets/images/logo2d.png")}
+          source={
+            isDark
+              ? require("../../assets/images/logo.png")
+              : require("../../assets/images/logo2d.png")
+          }
           style={styles.logo}
         />
-        <Text style={[styles.welcomeText, { color: theme.text }]}>Welcome Back</Text>
+        <Text style={[styles.welcomeText, { color: theme.text }]}>
+          Create Account
+        </Text>
         <Text style={[styles.loginSubText, { color: theme.text }]}>
-          Log in to continue your fitness journey
+          Let’s start!
         </Text>
       </View>
 
-      {/* Form in sporty rectangle */}
-      <View style={[styles.formCard]}>
+      {/* Sporty card form */}
+      <View
+        style={[
+          styles.formCard,
+          { backgroundColor: theme.card, shadowColor: theme.primary },
+        ]}
+      >
         <TextInput
           style={[
             styles.input,
             {
               backgroundColor: getInputBackground("email"),
-              color: isDark ? "#fff" : "#1E1E1E",
+              color: isDark ? "#fff" : "#222",
             },
           ]}
           placeholder="Email"
-          placeholderTextColor={isDark ? "#aaa" : "#888"}
+          placeholderTextColor={isDark ? "#aaa" : "#666"}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           onFocus={() => setFocusedInput("email")}
           onBlur={() => setFocusedInput("")}
         />
+
+        <TextInput
+          style={[
+            styles.input,
+            {
+              backgroundColor: getInputBackground("phone"),
+              color: isDark ? "#fff" : "#222",
+            },
+          ]}
+          placeholder="Phone"
+          placeholderTextColor={isDark ? "#aaa" : "#666"}
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+          onFocus={() => setFocusedInput("phone")}
+          onBlur={() => setFocusedInput("")}
+        />
+
         <TextInput
           style={[
             styles.input,
             {
               backgroundColor: getInputBackground("password"),
-              color: isDark ? "#fff" : "#000",
+              color: isDark ? "#fff" : "#222",
             },
           ]}
           placeholder="Password"
-          placeholderTextColor={isDark ? "#aaa" : "#888"}
+          placeholderTextColor={isDark ? "#aaa" : "#666"}
           secureTextEntry
           value={password}
           onChangeText={setPassword}
@@ -77,12 +114,33 @@ export default function Login() {
           onBlur={() => setFocusedInput("")}
         />
 
-        <Pressable style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
+        <TextInput
+          style={[
+            styles.input,
+            {
+              backgroundColor: getInputBackground("cpassword"),
+              color: isDark ? "#fff" : "#222",
+            },
+          ]}
+          placeholder="Confirm Password"
+          placeholderTextColor={isDark ? "#aaa" : "#666"}
+          secureTextEntry
+          value={cpassword}
+          onChangeText={setcPassword}
+          onFocus={() => setFocusedInput("cpassword")}
+          onBlur={() => setFocusedInput("")}
+        />
 
-        {/* Sign Up as button */}
-        <Pressable style={styles.signupButton} onPress={() => router.push("/Auth/signup")}>
+        {/* Login button */}
+        {/* <Pressable style={[styles.button, { backgroundColor: theme.primary }]} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable> */}
+
+        {/* Sign Up button */}
+        <Pressable
+          style={[styles.signupButton, { backgroundColor: theme.chart }]}
+          onPress={() => router.push("/Auth/login")}
+        >
           <Text style={styles.signupButtonText}>Sign Up</Text>
         </Pressable>
       </View>
@@ -121,7 +179,9 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 20,
     borderRadius: 20,
-    elevation: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 6,
     marginBottom: 20,
     alignItems: "center",
   },
@@ -132,7 +192,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 18,
     fontSize: 16,
-    elevation: 3,
   },
   button: {
     width: "100%",
@@ -140,7 +199,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#7C4DFF",
     marginTop: 10,
   },
   buttonText: {
@@ -156,7 +214,6 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF5722",
     marginTop: 15,
   },
   signupButtonText: {

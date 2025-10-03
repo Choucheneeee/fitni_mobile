@@ -13,7 +13,7 @@ export default function Onboarding() {
       resizeMode="cover"
     >
       <View style={[styles.overlay, { backgroundColor: theme.background }]}>
-        <Text style={[styles.login, { color: theme.chart }]}>Log in</Text>
+        <Text style={[styles.login, { color: theme.chart }]}>Welcome</Text>
         <View style={styles.logoContainer}>
           <Image
             source={

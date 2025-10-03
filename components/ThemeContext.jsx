@@ -5,7 +5,7 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(false); // default light mode
-  const theme = isDark ? darkTheme : lightTheme;
+  const theme = !isDark ?  lightTheme :darkTheme;
 
   const toggleTheme = () => {
     setIsDark((prev) => !prev);
